@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { DUMMY_POSTS } from "../Data";
 import PostItems from "../Components/PostItems";
 
 const AuthorPosts = () => {
-  const [posts, setPosts] = useState(DUMMY_POSTS);
+  const [posts,] = useState(DUMMY_POSTS);
   return (
     <section className="posts">
       {posts.length > 0 ? (

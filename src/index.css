@@ -326,7 +326,7 @@ nav {
 
 footer {
   background: var(--color-gray-900);
-  margin-top: 6rem;
+  margin-top: auto;
   padding-top: 6rem;
 }
 
@@ -836,13 +836,44 @@ textarea {
 
   .post__content h3 {
     font-size: 17px;
-    }
+  }
 
-    .post__content p {
-      font-size: 12px;
-    }
+  .post__content p {
+    font-size: 12px;
+  }
 
-    .btn.category {
-      font-size: 0.2;
-    }
+  .btn.category {
+    font-size: 0.2;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  #light-bulb-toggle {
+    display: block;
+    position: relative;
+    right: 220px;
+  }
+
+  .nav__toggle-btn {
+    background: transparent;
+    display: block;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    right: 10px;
+  }
+
+  .nav__menu li {
+    width: 100%;
+    margin-right: 200px;
+    border-radius: 5px;
+    /* box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26); */
+    animation: dropDown 500ms ease forwards;
+    opacity: 0;
+    transform: translateY(-20px); /* Start from above */
+  }
+
+  footer {
+    margin-top: 7.5rem;
+  }
 }

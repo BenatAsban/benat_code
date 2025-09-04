@@ -40,7 +40,10 @@ const Posts = () => {
 
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 600);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 420);
+    };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -55,7 +58,7 @@ const Posts = () => {
   const styles = {
     postsContainer: {
       width: isMobile ? "100vw" : "72vw",
-      height: isMobile ? "100vw" : "undefined",
+      height: isMobile ? "120vw" : "undefined",
       zIndex: 0,
     },
     swiperSlide: {

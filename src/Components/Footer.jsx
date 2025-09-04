@@ -66,7 +66,6 @@ function Footer() {
       position: relative;
       display: inline-block;
       text-decoration: none;
-      overflow: hidden;
     }
     
     .footer-link::after {

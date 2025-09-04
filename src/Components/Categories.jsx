@@ -76,7 +76,10 @@ const Categories = () => {
     //light-mode End code
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 600);
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 420);
+        };
+        handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -95,10 +98,10 @@ const Categories = () => {
 
         grid: {
             display: "grid",
-            gap: "24px",
-            gridTemplateColumns: isMobile ? "repeat(2, 3fr)" : "repeat(3, 2fr)",
-            maxWidth: isMobile ? "600px" : undefined,
-            margin: isMobile ? "0 auto" : undefined,
+            gap: isMobile ? "12px" : "24px",
+            gridTemplateColumns: isMobile ? "repeat(auto-fit, minmax(140px, 1fr))" : "repeat(3, 2fr)",
+            maxWidth: isMobile ? "420px" : undefined,
+            margin: isMobile ? "auto" : undefined,
             width: isMobile ? "100%" : undefined,
         },
     }
@@ -209,6 +212,7 @@ const Categories = () => {
                                             fontWeight: 700,
                                             color: theme === "light" ? "#121212" : "#fff",
                                             marginBottom: "8px",
+                                            marginLeft: isMobile ? "-13px" : undefined,
                                             transition: "all 0.3s ease",
                                         }}
                                         onMouseEnter={(e) => {

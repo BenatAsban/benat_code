@@ -17,7 +17,6 @@ import LoginD from "./Pages/LoginD";
 import UserProfile from "./Pages/UserProfile";
 import Category from "./Pages/Category";
 import FullSizePage from "./Pages/FullSizePage";
-import Blog from "./Pages/Blog";
 import CreatePost from "./Pages/CreatePost";
 import EditPost from "./Pages/EditPost";
 import CategoryPosts from "./Pages/CategoryPosts";
@@ -44,7 +43,6 @@ const router = createBrowserRouter([
       { path: "profile/:id", element: <UserProfile /> },
       { path: "category", element: <Category /> },
       { path: "full-size-page/:postId", element: <FullSizePage /> },
-      { path: "blog", element: <Blog /> },
       { path: "create", element: <CreatePost /> },
       { path: "editpost/:id", element: <EditPost /> },
       { path: "Posts/categories/:category", element: <CategoryPosts /> },

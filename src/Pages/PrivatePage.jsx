@@ -153,10 +153,13 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
   };
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 600);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 420);
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
 
   const styles = {
@@ -178,7 +181,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
       fontSize: isMobile ? undefined : "0.9rem",
       marginLeft: "auto",
       position: "relative",
-      left: isMobile ? "-25px" : "5px",
+      left: isMobile ? "-100px" : "5px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -194,7 +197,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
       justifyContent: 'center',
       margin: '5px 0',
       position: "relative",
-      right: isMobile ? "360px" : "90px",
+      right: isMobile ? "390px" : "90px",
     }
 
   }

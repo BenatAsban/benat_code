@@ -268,16 +268,13 @@ const Categories = () => {
 
   // Handle window resize
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 600);
-      if (window.innerWidth > 880) {
-        setIsNavShowing(true);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+        const handleResize = () => {
+          setIsMobile(window.innerWidth <= 420);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+      }, []);
 
   // Apply theme
   useEffect(() => {
@@ -382,7 +379,7 @@ const Categories = () => {
       fontSize: isMobile ? undefined : "0.9rem",
       marginLeft: "auto",
       position: "relative",
-      left: isMobile ? "-25px" : "5px",
+      left: isMobile ? "-100px" : "5px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -394,7 +391,7 @@ const Categories = () => {
       justifyContent: 'center',
       margin: '5px 0',
       position: "relative",
-      right: isMobile ? "360px" : "90px",
+      right: isMobile ? "390px" : "90px",
     },
     postContainer: {
       padding: "50px 0 0 30px",
@@ -598,7 +595,7 @@ const Categories = () => {
 }
 
 /* YourComponent.module.css */
-@media (max-width: 600px) {
+@media (max-width: 420px) {
   .categories__container {
     display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -611,7 +608,7 @@ const Categories = () => {
   }
 
   .posts__container > * {
-  width: 150px;
+  width: 130px;
   border-radius: 10px;
   position: relative;
   right: 10px;
@@ -620,7 +617,7 @@ const Categories = () => {
   }
 
   .posts__container {
-  gap: 10px;
+  gap: 1px;
   }
 
   .post__thumbnail {
@@ -690,6 +687,10 @@ const Categories = () => {
   .custom-tooltip:hover::after {
   font-size: 10px;
   
+  }
+
+  footer {
+  margin-top: auto;
   }
 }
 

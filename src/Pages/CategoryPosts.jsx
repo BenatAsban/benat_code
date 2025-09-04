@@ -3,7 +3,7 @@ import { DUMMY_POSTS } from "../Data";
 import PostItems from "../Components/PostItems";
 
 const CategoryPosts = () => {
-  const [posts, setPosts] = useState(DUMMY_POSTS);
+  const [posts, ] = useState(DUMMY_POSTS);
   return (
     <section>
       {posts.length > 0 ? (
