@@ -223,7 +223,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
             </Link>
 
             <div
-              style={styles.lightBulb}
+              style={styles.lightBulb} id='lightbulb'
             >
               <LightBulbToggle theme={theme} handleToggleTheme={handleToggleTheme} />
             </div>
@@ -241,6 +241,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
                   </Link>
                 </li>
                 <li
+                  id="logout-button"
                   onClick={handleLogout}
                   style={styles.logoutButton}
                 >
@@ -258,6 +259,19 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
           </div>
         </nav>
       </header>
+      <style jsx>{`
+    @media (max-width: 320px) {
+      #lightbulb {
+        position: relative !important;
+        right: 410px !important;
+      }
+
+      #logout-button {
+        position: relative;
+        left: -190px !important;
+      }
+    }
+  `}</style>
       <Hero />
       <Posts />
       <Categories />

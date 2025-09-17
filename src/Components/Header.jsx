@@ -57,76 +57,6 @@ const LightBulbToggle = ({ theme, handleToggleTheme }) => {
           </clipPath>
         </defs>
 
-        {/* <g className="toggle-scene__cords">
-          <path
-            className="toggle-scene__cord"
-            markerEnd="url(#a)"
-            fill="none"
-            strokeLinecap="square"
-            strokeWidth="6"
-            d="M123.228-28.56v150.493"
-            transform="translate(-24.503 256.106)"
-            style={{ display: "none", stroke: theme === "light" ? "#666" : "#333" }}
-          />
-          <path
-            className="toggle-scene__cord"
-            markerEnd="url(#a)"
-            fill="none"
-            strokeLinecap="square"
-            strokeWidth="6"
-            d="M123.228-28.59s28 8.131 28 19.506-18.667 13.005-28 19.507c-9.333 6.502-28 8.131-28 19.506s28 19.507 28 19.507"
-            transform="translate(-24.503 256.106)"
-            style={{ stroke: theme === "light" ? "#666" : "#333" }}
-          />
-          <path
-            className="toggle-scene__cord"
-            markerEnd="url(#a)"
-            fill="none"
-            strokeLinecap="square"
-            strokeWidth="6"
-            d="M123.228-28.575s-20 16.871-20 28.468c0 11.597 13.333 18.978 20 28.468 6.667 9.489 20 16.87 20 28.467 0 11.597-20 28.468-20 28.468"
-            transform="translate(-24.503 256.106)"
-            style={{ stroke: theme === "light" ? "#666" : "#333" }}
-          />
-          <path
-            className="toggle-scene__cord"
-            markerEnd="url(#a)"
-            fill="none"
-            strokeLinecap="square"
-            strokeWidth="6"
-            d="M123.228-28.569s16 20.623 16 32.782c0 12.16-10.667 21.855-16 32.782-5.333 10.928-16 20.623-16 32.782 0 12.16 16 32.782 16 32.782"
-            transform="translate(-24.503 256.106)"
-            style={{ stroke: theme === "light" ? "#666" : "#333" }}
-          />
-          <path
-            className="toggle-scene__cord"
-            markerEnd="url(#a)"
-            fill="none"
-            strokeLinecap="square"
-            strokeWidth="6"
-            d="M123.228-28.563s-10 24.647-10 37.623c0 12.977 6.667 25.082 10 37.623 3.333 12.541 10 24.647 10 37.623 0 12.977-10 37.623-10 37.623"
-            transform="translate(-24.503 256.106)"
-            style={{ stroke: theme === "light" ? "#666" : "#333" }}
-          />
-          <g className="line toggle-scene__dummy-cord">
-            <line
-              markerEnd="url(#a)"
-              x1="98.7255"
-              x2="98.7255"
-              y1="240.5405"
-              y2="380.5405"
-              style={{ stroke: theme === "light" ? "#666" : "#333" }}
-            />
-          </g>
-          <circle
-            className="toggle-scene__hit-spot"
-            cx="98.7255"
-            cy="380.5405"
-            r="30"
-            fill="transparent"
-          />
-        </g> */}
-
         <g className="toggle-scene__bulb bulb" transform="translate(844.069 -645.213)">
           <path
             className="bulb__cap"
@@ -177,10 +107,34 @@ function Header({ isAuthenticated, user, onLogout }) {
     return localStorage.getItem("theme") || "light";
   });
 
+  // Refs for detecting outside clicks
+  const navMenuRef = useRef(null);
+  const navToggleRef = useRef(null);
+
   useEffect(() => {
     document.body.className = theme === "dark" ? "dark-mode" : "light-mode";
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  // Effect to handle clicks outside the navigation
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (window.innerWidth < 880 &&
+        isNavShowing &&
+        navMenuRef.current &&
+        navToggleRef.current &&
+        !navMenuRef.current.contains(event.target) &&
+        !navToggleRef.current.contains(event.target)) {
+        setIsNavShowing(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isNavShowing]);
 
   const handleToggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
@@ -251,12 +205,8 @@ function Header({ isAuthenticated, user, onLogout }) {
 
         `}</style>
 
-
-
-
-
         {isNavShowing && (
-          <ul className="nav__menu">
+          <ul ref={navMenuRef} className="nav__menu">
             <li className="nav-hover">
               <Link to="/" onClick={closeNavHandler}>
                 Dashboard
@@ -311,6 +261,7 @@ function Header({ isAuthenticated, user, onLogout }) {
           </ul>
         )}
         <button
+          ref={navToggleRef}
           className="nav__toggle-btn"
           onClick={() => setIsNavShowing(!isNavShowing)}
         >

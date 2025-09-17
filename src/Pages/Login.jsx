@@ -312,9 +312,9 @@ function Login({ onLogin }) {
                     <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
                   </span>
                 </div>
-                <div className="forgot-password">
+                {/* <div className="forgot-password">
                   <Link to="/forgot-password">Forgot Password?</Link>
-                </div>
+                </div> */}
               </div>
 
               <button type="submit" className="login-btn">
@@ -334,7 +334,7 @@ function Login({ onLogin }) {
         {/* Social Login Options */}
         <div className="social-login">
           <button className="social-btn google-btn" onClick={handleGoogleSignIn}>
-            <FcGoogle size={25} />
+            <FcGoogle className="google-icon" />
             <span>Sign in with Google</span>
           </button>
         </div>
@@ -371,7 +371,7 @@ function Login({ onLogin }) {
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        
+
         .login-header {
           text-align: center;
           margin-bottom: 30px;
@@ -389,38 +389,38 @@ function Login({ onLogin }) {
           font-size: 16px;
         }
         
-        .auth-method-selector {
-          display: flex;
-          gap: 10px;
-          margin-bottom: 25px;
-        }
+        // .auth-method-selector {
+        //   display: flex;
+        //   gap: 10px;
+        //   margin-bottom: 25px;
+        // }
         
-        .method-btn {
-          flex: 1;
-          padding: 12px 15px;
-          border: 2px solid #333;
-          border-radius: 10px;
-          background: #1e1e1e;
-          color: #e1d9d1;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-        }
+        // .method-btn {
+        //   flex: 1;
+        //   padding: 12px 15px;
+        //   border: 2px solid #333;
+        //   border-radius: 10px;
+        //   background: #1e1e1e;
+        //   color: #e1d9d1;
+        //   font-weight: 600;
+        //   cursor: pointer;
+        //   transition: all 0.3s ease;
+        //   display: flex;
+        //   align-items: center;
+        //   justify-content: center;
+        //   gap: 8px;
+        // }
         
-        .method-btn:focus {
-          border-color: #b19cd9;
-          box-shadow: 0 0 0 3px rgba(177, 156, 217, 0.3);
-        }
+        // .method-btn:focus {
+        //   border-color: #b19cd9;
+        //   box-shadow: 0 0 0 3px rgba(177, 156, 217, 0.3);
+        // }
 
-        .method-btn.active {
-          background: #b19cd9 !important;
-          color: white !important;
-          box-shadow: 0 4px 12px rgba(177, 156, 217, 0.3) !important;
-        }
+        // .method-btn.active {
+        //   background: #b19cd9 !important;
+        //   color: white !important;
+        //   box-shadow: 0 4px 12px rgba(177, 156, 217, 0.3) !important;
+        // }
 
         // .method-btn.google-btn.active {
         //   background: #b19cd9;
@@ -490,14 +490,14 @@ function Login({ onLogin }) {
         }
         
         .forgot-password a {
-          color: #3498db;
+          color: #b19cd9;
           text-decoration: none;
           font-size: 14px;
           transition: color 0.2s;
         }
         
         .forgot-password a:hover {
-          color: #2980b9;
+          color: #b19cd9;
           text-decoration: underline;
         }
         
@@ -521,24 +521,24 @@ function Login({ onLogin }) {
           box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);
         }
         
-        .otp-resend {
-          text-align: center;
-          margin-top: 10px;
-          font-size: 14px;
-        }
+        // .otp-resend {
+        //   text-align: center;
+        //   margin-top: 10px;
+        //   font-size: 14px;
+        // }
         
-        .otp-resend button {
-          background: none;
-          border: none;
-          color: #3498db;
-          cursor: pointer;
-          font-weight: 600;
-          padding: 0;
-        }
+        // .otp-resend button {
+        //   background: none;
+        //   border: none;
+        //   color: #3498db;
+        //   cursor: pointer;
+        //   font-weight: 600;
+        //   padding: 0;
+        // }
         
-        .otp-resend button:hover {
-          text-decoration: underline;
-        }
+        // .otp-resend button:hover {
+        //   text-decoration: underline;
+        // }
         
         .divider {
           position: relative;
@@ -618,7 +618,7 @@ function Login({ onLogin }) {
         }
         
         .login-footer a {
-          color: #3498db;
+          color: #b19cd9;
           text-decoration: none;
           font-weight: 600;
         }
@@ -626,11 +626,87 @@ function Login({ onLogin }) {
         .login-footer a:hover {
           text-decoration: underline;
         }
-          
-          .auth-method-selector {
-            flex-direction: column;
+
+        .google-icon {
+  font-size: 25px; 
+  } 
+
+
+         @media screen and (max-width: 320px) {
+
+         .login-header {
+         margin-bottom: 20px; 
+         }
+
+
+
+          .login-header h2 {
+          margin-left: 7px;
+            font-size: 24px;
           }
+
+            .login-header p {
+          font-size: 11px;
+          margin-left: 10px;
         }
+
+         #email::placeholder {
+  font-size: 12px; 
+  color: #888;  
+}
+
+  #password::placeholder {
+  font-size : 11px;
+  color: #888;
+  }
+
+.fas.fa-envelope {
+  font-size: 14px; 
+}
+
+  .fas.fa-lock {
+  font-size: 14px;
+  }
+
+  
+.login-btn {
+  padding: 6px 12px;  
+  font-size: 14px; 
+}
+
+.social-btn.google-btn {
+  padding: 6px 12px;   
+  font-size: 14px;  
+  gap: 6px;       
+}
+
+
+.google-icon {
+  font-size: 18px;  
+  width: 18px;    
+  height: 18px;  
+}
+
+
+.social-btn.google-btn span {
+  font-size: 14px;
+}
+
+.login-footer {
+  margin-top: 16px;     
+  text-align: center;  
+  font-size: 14px;    
+  color: #555;   
+}
+
+.login-footer a {
+  font-size: 14px;    
+  font-weight: 600;  
+  text-decoration: none; 
+}
+
+        }
+
       `}</style>
 
       {/* Font Awesome for icons */}

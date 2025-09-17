@@ -6,10 +6,9 @@ import {
   FaInstagram,
   FaEnvelope,
   FaYoutube,
-} from "react-icons/fa"; // Importing icons from react-icons
+} from "react-icons/fa";
 
 function Footer() {
-
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -53,41 +52,37 @@ function Footer() {
     }
   };
 
-
-
   return (
     <footer style={updatedStyles.footer}>
       <div style={updatedStyles.footerLinks}>
         <div style={updatedStyles.footerLinksText}>
-          {/* Add style tag for animations */}
           <style>
             {`
-    .footer-link {
-      position: relative;
-      display: inline-block;
-      text-decoration: none;
-    }
-    
-    .footer-link::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 50%;
-      width: 0;
-      height: 2px;
-      background-color: currentColor;
-      transition: all 0.3s ease;
-      transform: translateX(-50%);
-    }
-    
-    .footer-link:hover::after {
-      width: 100%;
-      color: #b19cd9;
-    }
-    `}
+              .footer-link {
+                position: relative;
+                display: inline-block;
+                text-decoration: none;
+              }
+              
+              .footer-link::after {
+                content: '';
+                position: absolute;
+                bottom: 2px;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background-color: currentColor;
+                transition: all 0.3s ease;
+                transform: translateX(-50%);
+              }
+              
+              .footer-link:hover::after {
+                width: 100%;
+                color: #b19cd9;
+              }
+            `}
           </style>
 
-          {/* Add className to each Link */}
           <Link to="/" style={updatedStyles.link} className="footer-link">
             Home
           </Link>
@@ -101,7 +96,6 @@ function Footer() {
             Share Ur Thoughts
           </Link>
         </div>
-
 
         <div style={updatedStyles.footerSocialIcons}>
           {[
@@ -168,7 +162,10 @@ const styles = {
     backgroundColor: "#e1d9d1",
     padding: "20px",
     textAlign: "center",
+    width: "100%",
+    marginTop: "auto",
   },
+  
   footerCategories: {
     listStyle: "none",
     padding: "0",
@@ -185,17 +182,21 @@ const styles = {
     marginBottom: "20px",
     display: "flex",
     justifyContent: "center",
-    gap: "25px", // Increased margin to add more space below the text links
+    gap: "25px",
+    flexWrap: "wrap", // Allow links to wrap on smaller screens
   },
   link: {
     margin: "0 10px",
     textDecoration: "none",
-    color: "#e1d9d1", // Changed to white
+    color: "#e1d9d1",
+    fontWeight: "500",
+    transition: "color 0.3s ease",
   },
   footerSocialIcons: {
     display: "flex",
     justifyContent: "center",
     gap: "30px",
+    flexWrap: "wrap", // Allow icons to wrap on smaller screens
   },
   iconContainer: {
     position: 'relative',
@@ -236,6 +237,6 @@ const styles = {
   footerCopyright: {
     marginTop: "20px",
     fontSize: "14px",
-    color: "#e1d9d1", // Changed to white
+    color: "#e1d9d1",
   },
-};
+};  

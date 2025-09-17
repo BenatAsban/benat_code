@@ -58,7 +58,7 @@ const Posts = () => {
   const styles = {
     postsContainer: {
       width: isMobile ? "100vw" : "72vw",
-      height: isMobile ? "120vw" : "undefined",
+      height: isMobile ? "150vw" : "undefined",
       zIndex: 0,
     },
     swiperSlide: {
@@ -78,7 +78,7 @@ const Posts = () => {
 
 
   return (
-    <section style={{ height: isMobile ? "80vh" : "70vh", marginTop: isMobile ? "30px" : undefined }}>
+    <section id='swiperheight' style={{ height: isMobile ? "80vh" : "70vh", marginTop: isMobile ? "30px" : undefined }}>
       <motion.div variants={fadeUpVariant}
         initial="hidden"
         whileInView="visible" style={{ textAlign: "center", marginBottom: "20px" }}>
@@ -120,13 +120,13 @@ const Posts = () => {
               modifier: 1,
               slideShadows: true,
             }}
-            modules={[EffectCoverflow, Autoplay]}
+            modules={[EffectCoverflow, Autoplay]} 
             style={styles.postsContainer}
             spaceBetween={-5}
           >
             {posts.map(({ id, thumbnail, category, title, desc, authorID }) => (
               <SwiperSlide key={id} style={{
-                width: isMobile ? '280px' : '350px',
+                width: isMobile ? '250px' : '350px',
                 height: isMobile ? '400px' : '500px',
               }}>
                 <PostItems

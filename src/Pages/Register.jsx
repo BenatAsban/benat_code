@@ -322,6 +322,74 @@ function Register() {
           .login-card {
             padding: 30px 20px;
           }
+
+          @media screen and (max-width: 320px) {
+
+         .login-header {
+         margin-bottom: 20px; 
+         }
+
+          .login-header h2 {
+            font-size: 24px;
+          }
+
+            .login-header p {
+          font-size: 14px;
+          margin-left: 22px;
+        }
+
+         #email::placeholder {
+  font-size: 12px; 
+  color: #888;  
+}
+
+  #password::placeholder {
+  font-size : 11px;
+  color: #888;
+  }
+
+  #confirmPassword::placeholder {
+  font-size : 11px;
+  color: #888;
+  }
+
+  #name::placeholder {
+  font-size : 11px;
+  color: #888;
+  }
+
+  .fas.fa-user {
+  font-size: 14px;
+  }
+
+.fas.fa-envelope {
+  font-size: 14px; 
+}
+
+  .fas.fa-lock {
+  font-size: 14px;
+  }
+
+  
+.login-btn {
+  padding: 6px 12px;  
+  font-size: 14px; 
+}
+
+.login-footer {
+  margin-top: 16px;     
+  text-align: center;  
+  font-size: 14px;    
+  color: #555;   
+}
+
+.login-footer a {
+  font-size: 14px;    
+  font-weight: 600;  
+  text-decoration: none; 
+}
+
+        }
         }
       `}</style>
 

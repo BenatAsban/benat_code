@@ -22,10 +22,6 @@
   --radius-4: 2rem;
 }
 
-body {
-  transition: background-color 0.3s, color 0.3s;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -38,7 +34,9 @@ html {
   transition: background-color 300ms ease, color 300ms ease;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  height: 100%;
 }
+
 
 body {
   font-family: "Poppins", sans-serif;
@@ -46,8 +44,16 @@ body {
   font-size: 0.9rem;
   line-height: 1.6;
   color: var(--color-gray-700);
-}
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}       
 
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  padding-bottom: 2rem; /* Add some space before footer */
+}
 /* ------------ Dark Mode and Light Mode Start ----------*/
 
 body.dark-mode {
@@ -324,11 +330,6 @@ nav {
 
 /* ******************* Footer ******************** */
 
-footer {
-  background: var(--color-gray-900);
-  margin-top: auto;
-  padding-top: 6rem;
-}
 
 .footer__categories {
   display: flex;
@@ -385,8 +386,8 @@ footer {
 
 .posts__container > * {
   width: 350px; /* Same as column width */
-  height: 500px; /* Makes it square */
-  overflow: hidden;
+  height: auto; /* Makes it square */
+  overflow: visible;
   position: relative;
   right: 270px;
 }
@@ -872,8 +873,50 @@ textarea {
     opacity: 0;
     transform: translateY(-20px); /* Start from above */
   }
+}
 
-  footer {
-    margin-top: 7.5rem;
+@media screen and (max-width: 320px) {
+  * {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    box-sizing: border-box;
   }
+
+  #light-bulb-toggle {
+    display: block;
+    position: relative;
+    right: 250px;
+  }
+
+  .nav__toggle-btn {
+    background: transparent;
+    display: block;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    right: -5px;
+  }
+
+  .nav__menu li {
+    width: 100%;
+    margin-right: 380px;
+    border-radius: 5px;
+    /* box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26); */
+    animation: dropDown 500ms ease forwards;
+    opacity: 0;
+    transform: translateY(-20px); /* Start from above */
+  }
+
+  .contentContainer {
+    position: relative;
+    top: -25px;
+  }
+
+  #swiperheight {
+    height: 80vh;
+  }
+  
+
 }

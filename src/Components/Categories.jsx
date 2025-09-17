@@ -87,7 +87,7 @@ const Categories = () => {
     const styles = {
         section: {
             background: theme === "light" ? "#fff" : "#333",
-            height: isMobile ? "100vh" : "70vh",
+            height: isMobile ? "130vh" : "80vh", 
             padding: "64px 0",
         },
         container: {
@@ -135,8 +135,7 @@ const Categories = () => {
                         Discover content that matters to you. Browse through our diverse range of topics.
                     </p>
                 </motion.div>
-
-                <div style={styles.grid}>
+                <div style={styles.grid} id='grid'>
                     {categories.map((category) => (
                         <motion.div
                             key={category.id}
@@ -169,7 +168,7 @@ const Categories = () => {
 
                                 <div style={{ position: "relative", zIndex: 0 }}>
                                     {/* Icon with gradient background - Animation container */}
-                                    <motion.div
+                                    <motion.div id="icon"
                                         style={{
                                             width: "48px",
                                             height: "48px",
@@ -206,7 +205,7 @@ const Categories = () => {
                                         </div>
                                     </motion.div>
 
-                                    <h3
+                                    <h3 id="font"
                                         style={{
                                             fontSize: "1.25rem",
                                             fontWeight: 700,
@@ -238,6 +237,25 @@ const Categories = () => {
                         </motion.div>
                     ))}
                 </div>
+                <style jsx>{`
+                    @media screen and (max-width: 320px) {
+                        #grid {
+                           position: relative;
+                           right: 10px;
+                           grid-template-columns: repeat(2,  minmax(135px, 1fr)) !important;
+                        }
+
+                        #font {
+                        text-align: center;
+                        font-size: 1rem !important;
+                        }
+
+                        #icon {
+                        position: relative;
+                        left: 18px;
+                        }
+                    }
+                `}</style>
             </div>
         </section>
     );

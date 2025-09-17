@@ -408,7 +408,7 @@ const Categories = () => {
               <img src={Logo} alt="Navbar Logo" />
             </Link>
 
-            <div style={styles.lightBulb}>
+            <div style={styles.lightBulb} id='lightbulb'>
               <LightBulbToggle theme={theme} handleToggleTheme={handleToggleTheme} />
             </div>
 
@@ -425,6 +425,7 @@ const Categories = () => {
                   </Link>
                 </li>
                 <li
+                  id="logout-button"
                   onClick={handleLogout}
                   style={styles.logoutButton}
                 >
@@ -756,6 +757,19 @@ const Categories = () => {
           </motion.div>
         </Container>
       </section>
+      <style jsx>{`
+    @media (max-width: 320px) {
+      #lightbulb {
+        position: relative !important;
+        right: 410px !important;
+      }
+
+      #logout-button {
+        position: relative;
+        left: -190px !important;
+      }
+    }
+  `}</style>
     </div>
   );
 };
