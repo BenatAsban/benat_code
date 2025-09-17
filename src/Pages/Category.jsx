@@ -268,13 +268,13 @@ const Categories = () => {
 
   // Handle window resize
   useEffect(() => {
-        const handleResize = () => {
-          setIsMobile(window.innerWidth <= 420);
-        };
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-      }, []);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 420);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Apply theme
   useEffect(() => {

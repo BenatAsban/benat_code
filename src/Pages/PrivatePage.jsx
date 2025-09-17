@@ -111,6 +111,27 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
   });
   const [user, setUser] = useState(null);
   const [isNavShowing, setIsNavShowing] = useState(window.innerWidth > 800);
+  const navMenuRef = useRef(null);
+  const navToggleRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isNavShowing &&
+        navMenuRef.current &&
+        !navMenuRef.current.contains(event.target) &&
+        navToggleRef.current &&
+        !navToggleRef.current.contains(event.target)
+      ) {
+        setIsNavShowing(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isNavShowing]);
 
   useEffect(() => {
     document.body.className = theme === "dark" ? "dark-mode" : "light-mode";
@@ -153,13 +174,13 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
   };
 
   useEffect(() => {
-      const handleResize = () => {
-        setIsMobile(window.innerWidth <= 420);
-      };
-      handleResize();
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 420);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
 
   const styles = {
@@ -229,7 +250,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
             </div>
 
             {isNavShowing && (
-              <ul className="nav__menu" style={styles.navLinks}>
+              <ul className="nav__menu" style={styles.navLinks} ref={navMenuRef}>
                 <li className="nav-hover">
                   <Link to="/privatepage" onClick={closeNavHandler}>
                     Dashboard
@@ -253,6 +274,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
             <button
               className="nav__toggle-btn"
               onClick={() => setIsNavShowing(!isNavShowing)}
+              ref={navToggleRef}
             >
               {isNavShowing ? <AiOutlineClose /> : <FaBars />}
             </button>
@@ -278,8 +300,5 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
     </div>
   );
 };
-
-
-
 
 export default PrivatePage;
