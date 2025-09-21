@@ -41,6 +41,28 @@ const PostAuthor = () => {
             opacity: 0.8;
           }
       }
+
+            @media (max-width: 320px) {
+            .post__author {
+                height: 8px;
+                gap: 6px;
+                bottom: 3px;
+            }
+            
+            .post__author-avatar img {
+                width: 25px;
+                height: 25px;
+                border-width: 2px;
+            }
+            
+            .post__author-details h5 {
+                font-size: 9px;
+            }
+            
+            .post__author-details small {
+                font-size: 7px;
+            }
+        }
     
 
       

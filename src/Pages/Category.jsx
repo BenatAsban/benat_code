@@ -761,14 +761,89 @@ const Categories = () => {
     @media (max-width: 320px) {
       #lightbulb {
         position: relative !important;
-        right: 410px !important;
+        right: 420px !important;
       }
 
       #logout-button {
         position: relative;
         left: -190px !important;
       }
+
+      .categories__container {
+    grid-template-columns: repeat(2, 1fr); 
     }
+
+    .posts__section {
+  width: 100%;
+  max-width: 329px;
+  margin-top: -15px;
+}
+
+.posts__container > * {
+  width: 100px;
+  border-radius: 8px;
+  right: 8px;
+  padding: 8px;
+  margin: 4px;
+}
+
+.posts__container {
+  gap: 0;
+}
+
+.post__thumbnail {
+  height: 80px;
+}
+
+.post__thumbnail img {
+  width: 160px;
+  height: 80px;
+}
+
+.post__content h3 {
+  font-size: 11px;
+}
+
+.post__content p {
+  height: 2.8em;
+  line-height: 1.3em;
+  font-size: 9px;
+  margin: 3px 0;
+}
+
+.custom-tooltip:hover::after {
+  font-size: 9px;
+}
+
+.post__date p {
+  display: none;
+}
+
+.btn.category {
+
+    position: relative;
+    right: 12px;
+    bottom: 10px;
+    /* Size reduction */
+    padding: 2px 6px;
+    font-size: 8px;
+    
+    /* Layout adjustments */
+    min-width: 30px;
+    max-width: 60px;
+    height: 10px;
+    line-height: 1;
+    
+    /* Text control */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    /* Visual styling */
+    border-radius: 3px;
+    margin: 2px 0;
+  }
+      }
   `}</style>
     </div>
   );

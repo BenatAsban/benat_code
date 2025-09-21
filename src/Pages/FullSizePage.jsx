@@ -243,7 +243,7 @@ const FullSizePage = () => {
                         </Link>
 
                         <div
-                            style={styles.lightBulb}
+                            style={styles.lightBulb} id='lightbulb'
                         >
                             <LightBulbToggle theme={theme} handleToggleTheme={handleToggleTheme} />
                         </div>
@@ -261,6 +261,7 @@ const FullSizePage = () => {
                                     </Link>
                                 </li>
                                 <li
+                                    id="logout-button"
                                     onClick={handleLogout}
                                     style={styles.logoutButton}
                                 >
@@ -293,6 +294,33 @@ const FullSizePage = () => {
         margin-bottom: -70px;
       }
     }
+
+     @media (max-width: 320px) {
+
+     #lightbulb {
+        position: relative !important;
+        right: 420px !important;
+      }
+
+      #logout-button {
+        position: relative;
+        left: -190px !important;
+      }
+
+      #post-bottom {
+      margin-top: 1.5rem !important;
+      }
+
+      .post-detail {
+        width: 290px;
+        padding: 1rem;
+        margin-bottom: 50px;
+      }
+      
+      .post-content-container {
+        height: 300px;
+      }
+    }
     
     .post-content-container {
       position: relative;
@@ -312,6 +340,7 @@ const FullSizePage = () => {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
+                    id="post-bottom"
                     style={{
                         display: 'flex',
                         justifyContent: 'space-between',

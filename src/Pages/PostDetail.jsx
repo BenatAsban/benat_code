@@ -134,6 +134,13 @@ const PostDetail = () => {
                 }
 
 
+          @media (max-width: 320px) {
+                .categoryDate {
+                display: none;
+                }
+                }
+
+
 
         `}
         </style>
@@ -157,7 +164,7 @@ const PostDetail = () => {
             </div>
           </div>
 
-          <p style={{ color: '#aaa', marginBottom: '1rem' }}>
+          <p className="categoryDate" style={{ color: '#aaa', marginBottom: '1rem' }}>
             Published: {post.published_date}
           </p>
 

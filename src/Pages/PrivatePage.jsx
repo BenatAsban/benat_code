@@ -285,7 +285,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
     @media (max-width: 320px) {
       #lightbulb {
         position: relative !important;
-        right: 410px !important;
+        right: 420px !important;
       }
 
       #logout-button {
