@@ -37,7 +37,6 @@ html {
   height: 100%;
 }
 
-
 body {
   font-family: "Poppins", sans-serif;
   background: var(--color-bg);
@@ -47,7 +46,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}       
+}
 
 main {
   flex: 1 0 auto;
@@ -329,7 +328,6 @@ nav {
 }
 
 /* ******************* Footer ******************** */
-
 
 .footer__categories {
   display: flex;
@@ -917,6 +915,48 @@ textarea {
   #swiperheight {
     height: 80vh;
   }
-  
+}
 
+@media screen and (max-width: 280px) {
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0;
+    outline: 0;
+    box-sizing: border-box;
+  }
+
+  #light-bulb-toggle {
+    display: block;
+    position: relative;
+    right: 260px;
+  }
+
+  .nav__toggle-btn {
+    background: transparent;
+    display: block;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    right: -5px;
+  }
+
+  .nav__menu li a {
+    padding: 0.50rem 2rem !important;
+  }
+
+  .nav__menu li {
+    width: 100%;
+    margin-right: 455px !important;
+    border-radius: 5px;
+    /* box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26); */
+    animation: dropDown 500ms ease forwards;
+    opacity: 0;
+    transform: translateY(-20px); /* Start from above */
+  }
+
+  .contentContainer {
+    position: relative;
+    top: -25px;
+  }
 }

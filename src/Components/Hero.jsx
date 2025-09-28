@@ -44,6 +44,13 @@ const EarthWrapper = styled.div`
   width: 50vh;
   height: 50vh;
   }
+  @media only screen and (max-width: 280px) {
+  position: absolute;
+  top: 110px;
+  left: 25px;
+  width: 45vh;
+  height: 45vh;
+  }
 `;
 
 const MotionEarthWrapper = motion(EarthWrapper);
