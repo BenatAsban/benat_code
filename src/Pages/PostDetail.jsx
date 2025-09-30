@@ -62,10 +62,6 @@ const PostDetail = () => {
           //   color: #fff;
           // }
           
-          // .container {
-          //   margin: 0 auto;
-          // }
-          
           // .post-detail__header {
           //   margin-bottom: 2rem;
           // }

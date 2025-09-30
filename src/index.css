@@ -216,7 +216,7 @@ section {
 }
 
 .container {
-  width: 45%; /* form width */
+  width: 100%;
   margin-inline: auto;
 }
 
@@ -942,7 +942,7 @@ textarea {
   }
 
   .nav__menu li a {
-    padding: 0.50rem 2rem !important;
+    padding: 0.5rem 2rem !important;
   }
 
   .nav__menu li {
