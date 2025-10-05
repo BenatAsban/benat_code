@@ -7,16 +7,12 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import { motion } from "framer-motion";
 
-
 const Posts = () => {
   const [posts,] = useState(DUMMY_POSTS);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
-
-
-  //light-mode start code
-
+  const [isMobile, setIsMobile] = useState(false);
   const [theme, setTheme] = useState("light");
 
+  // Theme detection
   useEffect(() => {
     const updateTheme = () => {
       setTheme(document.body.classList.contains("dark-mode") ? "dark" : "light");
@@ -31,29 +27,54 @@ const Posts = () => {
     });
 
     return () => observer.disconnect();
-
-
   }, []);
 
-
-  //light-mode End code
-
-
+  // Responsive handling with better mobile detection
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 420);
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
     };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
+    // Check immediately
+    checkMobile();
+
+    // Add event listener with debounce
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkMobile, 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, []);
 
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
   };
 
+  // Swiper configuration for different screen sizes
+  const swiperConfig = {
+    mobile: {
+      width: '100vw',
+      slideWidth: 250,
+      slideHeight: 400,
+      spaceBetween: -80,
+    },
+    desktop: {
+      width: '72vw',
+      slideWidth: 350,
+      slideHeight: 500,
+      spaceBetween: -5,
+    }
+  };
 
   const styles = {
     postsContainer: {
@@ -61,27 +82,24 @@ const Posts = () => {
       height: isMobile ? "150vw" : "undefined",
       zIndex: 0,
     },
-    swiperSlide: {
-      backgroundPosition: "center",
-      backgroundSize: "cover",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: "12px",
-      overflow: "hidden",
-    },
-    swiperSlideActive: {
-      transform: "scale(1.05)",
-      zIndex: 0,
-    },
   };
 
+  const currentConfig = isMobile ? swiperConfig.mobile : swiperConfig.desktop;
 
   return (
-    <section id='swiperheight' style={{ height: isMobile ? "80vh" : "70vh", marginTop: isMobile ? "30px" : undefined }}>
-      <motion.div variants={fadeUpVariant}
+    <section
+      id='swiperheight'
+      style={{
+        height: isMobile ? "60vh" : "70vh",
+        marginTop: isMobile ? "30px" : undefined
+      }}
+    >
+      <motion.div
+        variants={fadeUpVariant}
         initial="hidden"
-        whileInView="visible" style={{ textAlign: "center", marginBottom: "20px" }}>
+        whileInView="visible"
+        style={{ textAlign: "center", marginBottom: "20px" }}
+      >
         <h2 style={{
           fontSize: isMobile ? "30px" : undefined,
           fontWeight: 700,
@@ -96,6 +114,7 @@ const Posts = () => {
           maxWidth: "42rem",
           margin: "0 auto",
           lineHeight: 1.5,
+          padding: isMobile ? "0 1rem" : "0",
         }}>
           Hand-picked articles that showcase the best of our content across various categories.
         </p>
@@ -120,15 +139,18 @@ const Posts = () => {
               modifier: 1,
               slideShadows: true,
             }}
-            modules={[EffectCoverflow, Autoplay]} 
+            modules={[EffectCoverflow, Autoplay]}
             style={styles.postsContainer}
-            spaceBetween={-5}
+            spaceBetween={currentConfig.spaceBetween}
           >
             {posts.map(({ id, thumbnail, category, title, desc, authorID }) => (
-              <SwiperSlide key={id} style={{
-                width: isMobile ? '250px' : '350px',
-                height: isMobile ? '400px' : '500px',
-              }}>
+              <SwiperSlide
+                key={id}
+                style={{
+                  width: currentConfig.slideWidth,
+                  height: currentConfig.slideHeight,
+                }}
+              >
                 <PostItems
                   postID={id}
                   thumbnail={thumbnail}
@@ -147,6 +169,5 @@ const Posts = () => {
     </section>
   );
 };
-
 
 export default Posts;

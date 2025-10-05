@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
 import { NotepadText, Brain, Globe, Cross, Landmark, Coffee } from 'lucide-react';
 
-
 const categories = [
     {
         id: 1,
@@ -49,62 +48,82 @@ const categories = [
 ];
 
 const Categories = () => {
-
     const [theme, setTheme] = useState("light");
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
-
-
-    useEffect(() => {
-        const updateTheme = () => {
-            setTheme(document.body.classList.contains("dark-mode") ? "dark" : "light");
-        };
-
-        updateTheme();
-
-        const observer = new MutationObserver(updateTheme);
-        observer.observe(document.body, {
-            attributes: true,
-            attributeFilter: ["class"],
-        });
-
-        return () => observer.disconnect();
-
-
-    }, []);
-
-
-    //light-mode End code
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 420);
-        };
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        // Check if window is defined (for SSR safety)
+        if (typeof window !== 'undefined') {
+            setIsMobile(window.innerWidth <= 600);
+
+            const updateTheme = () => {
+                setTheme(document.body.classList.contains("dark-mode") ? "dark" : "light");
+            };
+
+            updateTheme();
+
+            const observer = new MutationObserver(updateTheme);
+            observer.observe(document.body, {
+                attributes: true,
+                attributeFilter: ["class"],
+            });
+
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 600);
+            };
+
+            window.addEventListener("resize", handleResize);
+
+            return () => {
+                observer.disconnect();
+                window.removeEventListener("resize", handleResize);
+            };
+        }
     }, []);
 
     const styles = {
         section: {
             background: theme === "light" ? "#fff" : "#333",
-            height: isMobile ? "130vh" : "80vh", 
             padding: "64px 0",
+            minHeight: "auto",
+            width: "100%",
+            overflow: "hidden",
         },
         container: {
             maxWidth: "1280px",
             margin: "0 auto",
-            padding: "0 32px",
+            padding: "0 16px", // Reduced padding for mobile
+            width: "100%",
+            boxSizing: "border-box",
         },
-
         grid: {
             display: "grid",
-            gap: isMobile ? "12px" : "24px",
-            gridTemplateColumns: isMobile ? "repeat(auto-fit, minmax(140px, 1fr))" : "repeat(3, 2fr)",
-            maxWidth: isMobile ? "420px" : undefined,
-            margin: isMobile ? "auto" : undefined,
-            width: isMobile ? "100%" : undefined,
+            gap: "16px",
+            gridTemplateColumns: "repeat(3, 2fr)",
+            width: "100%",
+            maxWidth: "100%",
+            margin: "0 auto",
         },
-    }
+    };
+
+    // Mobile-specific styles
+    const mobileStyles = {
+        section: {
+            ...styles.section,
+            padding: "48px 0",
+        },
+        container: {
+            ...styles.container,
+            padding: "0 12px",
+        },
+        grid: {
+            ...styles.grid,
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: "12px",
+        },
+    };
+
+    const currentStyles = isMobile ? mobileStyles : styles;
 
     const fadeUpVariant = {
         hidden: { opacity: 0, y: 10 },
@@ -112,13 +131,20 @@ const Categories = () => {
     };
 
     return (
-        <section style={styles.section}>
-            <div style={styles.container}>
-                <motion.div variants={fadeUpVariant}
+        <section style={currentStyles.section}>
+            <div style={currentStyles.container}>
+                <motion.div
+                    variants={fadeUpVariant}
                     initial="hidden"
-                    whileInView="visible" style={{ textAlign: "center", marginBottom: "48px" }}>
+                    whileInView="visible"
+                    style={{
+                        textAlign: "center",
+                        marginBottom: isMobile ? "32px" : "48px",
+                        width: "100%"
+                    }}
+                >
                     <h2 style={{
-                        fontSize: "2rem",
+                        fontSize: isMobile ? "1.5rem" : "2rem",
                         fontWeight: 700,
                         marginBottom: "16px",
                         color: theme === "light" ? "#121212" : "#fff",
@@ -131,11 +157,14 @@ const Categories = () => {
                         maxWidth: "42rem",
                         margin: "0 auto",
                         lineHeight: 1.5,
+                        fontSize: isMobile ? "0.9rem" : "1rem",
+                        padding: isMobile ? "0 16px" : "0",
                     }}>
                         Discover content that matters to you. Browse through our diverse range of topics.
                     </p>
                 </motion.div>
-                <div style={styles.grid} id='grid'>
+
+                <div style={currentStyles.grid}>
                     {categories.map((category) => (
                         <motion.div
                             key={category.id}
@@ -143,19 +172,23 @@ const Categories = () => {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             whileHover={{ y: -5 }}
-                            style={{ cursor: "pointer" }}
+                            style={{
+                                cursor: "pointer",
+                                minHeight: "140px"
+                            }}
                         >
                             <div
                                 style={{
                                     borderRadius: "12px",
                                     boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                                    padding: "24px",
+                                    padding: isMobile ? "16px" : "24px",
                                     position: "relative",
                                     overflow: "hidden",
                                     cursor: "pointer",
+                                    height: "100%",
+                                    width: "100%",
                                 }}
                             >
-                                {/* Gradient overlay */}
                                 <div style={{
                                     position: "absolute",
                                     top: 0,
@@ -166,12 +199,17 @@ const Categories = () => {
                                     transition: "opacity 0.3s ease",
                                 }} />
 
-                                <div style={{ position: "relative", zIndex: 0 }}>
-                                    {/* Icon with gradient background - Animation container */}
-                                    <motion.div id="icon"
+                                <div style={{
+                                    position: "relative",
+                                    zIndex: 0,
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                }}>
+                                    <motion.div
                                         style={{
-                                            width: "48px",
-                                            height: "48px",
+                                            width: isMobile ? "40px" : "48px",
+                                            height: isMobile ? "40px" : "48px",
                                             borderRadius: "8px",
                                             background: category.gradient,
                                             display: "flex",
@@ -197,22 +235,22 @@ const Categories = () => {
                                         }}>
                                             <category.icon
                                                 style={{
-                                                    width: "24px",
-                                                    height: "24px",
+                                                    width: isMobile ? "20px" : "24px",
+                                                    height: isMobile ? "20px" : "24px",
                                                     color: "#ffffff",
                                                 }}
                                             />
                                         </div>
                                     </motion.div>
 
-                                    <h3 id="font"
+                                    <h3
                                         style={{
-                                            fontSize: "1.25rem",
+                                            fontSize: isMobile ? "1rem" : "1.25rem",
                                             fontWeight: 700,
                                             color: theme === "light" ? "#121212" : "#fff",
                                             marginBottom: "8px",
-                                            marginLeft: isMobile ? "-13px" : undefined,
                                             transition: "all 0.3s ease",
+                                            textAlign: isMobile ? "center" : "left",
                                         }}
                                         onMouseEnter={(e) => {
                                             e.target.style.backgroundImage = category.gradient;
@@ -231,28 +269,41 @@ const Categories = () => {
                                     >
                                         {category.name}
                                     </h3>
-
                                 </div>
                             </div>
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Enhanced CSS for better mobile support */}
                 <style jsx>{`
+                    @media screen and (max-width: 768px) {
+                        #grid {
+                            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+                            gap: 12px !important;
+                        }
+                    }
+                    
+                    @media screen and (max-width: 480px) {
+                        #grid {
+                            grid-template-columns: repeat(2, 1fr) !important;
+                            gap: 10px !important;
+                        }
+                    }
+                    
                     @media screen and (max-width: 320px) {
                         #grid {
-                           position: relative;
-                           right: 10px;
-                           grid-template-columns: repeat(2,  minmax(135px, 1fr)) !important;
+                            grid-template-columns: repeat(2, minmax(135px, 1fr)) !important;
+                            gap: 8px !important;
                         }
-
+                        
                         #font {
-                        text-align: center;
-                        font-size: 1rem !important;
+                            text-align: center;
+                            font-size: 0.9rem !important;
                         }
-
+                        
                         #icon {
-                        position: relative;
-                        left: 18px;
+                            margin: 0 auto 12px auto !important;
                         }
                     }
                 `}</style>

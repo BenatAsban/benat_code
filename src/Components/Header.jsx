@@ -13,7 +13,6 @@ gsap.registerPlugin(MorphSVGPlugin, Draggable);
 // Enhanced Light Bulb Toggle Component with GSAP
 const LightBulbToggle = ({ theme, handleToggleTheme }) => {
   const audioClickRef = useRef(null);
-  const [, setIsAnimating] = useState(false);
 
   useEffect(() => {
     audioClickRef.current = new Audio("https://assets.codepen.io/605876/click.mp3");
@@ -25,12 +24,7 @@ const LightBulbToggle = ({ theme, handleToggleTheme }) => {
       audioClickRef.current.currentTime = 0;
       audioClickRef.current.play();
     }
-
-    setIsAnimating(true);
     handleToggleTheme();
-
-    // Reset animation state after a short delay
-    setTimeout(() => setIsAnimating(false), 300);
   };
 
   return (
@@ -48,15 +42,6 @@ const LightBulbToggle = ({ theme, handleToggleTheme }) => {
         viewBox="0 0 197.451 481.081"
         style={{ width: "150%", height: "150%", position: "relative", left: "330px" }}
       >
-        <defs>
-          <marker id="a" orient="auto" overflow="visible" refX="0" refY="0">
-            <path className="toggle-scene__cord-end" fillRule="evenodd" strokeWidth=".2666" d="M.98 0a1 1 0 11-2 0 1 1 0 012 0z" />
-          </marker>
-          <clipPath id="g" clipPathUnits="userSpaceOnUse">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4.677" d="M-774.546 827.629s12.917-13.473 29.203-13.412c16.53.062 29.203 13.412 29.203 13.412v53.6s-8.825 16-29.203 16c-21.674 0-29.203-16-29.203-16z" />
-          </clipPath>
-        </defs>
-
         <g className="toggle-scene__bulb bulb" transform="translate(844.069 -645.213)">
           <path
             className="bulb__cap"

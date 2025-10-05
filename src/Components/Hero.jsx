@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 
-
 // ===== Earth Animations =====
 const rotateDay = keyframes`
   0% { background-position: 120% 0; }
@@ -19,8 +18,6 @@ const spinClouds = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
-
-
 // ===== Earth Styled Components =====
 const EarthWrapper = styled.div`
   position: absolute;
@@ -30,26 +27,42 @@ const EarthWrapper = styled.div`
   height: 80vh;
   z-index: 0;
 
+  /* Improved responsive design */
+  @media only screen and (max-width: 1200px) {
+    left: 600px;
+    width: 70vh;
+    height: 70vh;
+  }
+
+  @media only screen and (max-width: 1024px) {
+    left: 500px;
+    width: 60vh;
+    height: 60vh;
+  }
+
+  @media only screen and (max-width: 768px) {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 80vw;
+    height: 80vw;
+    margin: 0 auto;
+  }
+
   @media only screen and (max-width: 600px) {
-  position: absolute;
-  top: 110px;
-  left: 70px;
-  width: 55vh;
-  height: 55vh;
+    width: 70vw;
+    height: 70vw;
+    margin-top: 20px;
   }
+
+  @media only screen and (max-width: 480px) {
+    width: 85vw;
+    height: 85vw;
+  }
+
   @media only screen and (max-width: 320px) {
-  position: absolute;
-  top: 110px;
-  left: 25px;
-  width: 50vh;
-  height: 50vh;
-  }
-  @media only screen and (max-width: 280px) {
-  position: absolute;
-  top: 110px;
-  left: 25px;
-  width: 45vh;
-  height: 45vh;
+    width: 90vw;
+    height: 90vw;
   }
 `;
 
@@ -105,7 +118,6 @@ const InnerShadow = styled(PlanetLayer)`
   z-index: 5;
 `;
 
-
 // ===== Earth Component =====
 const Earth = () => (
   <MotionEarthWrapper
@@ -126,12 +138,28 @@ const Earth = () => (
 const Hero = () => {
   const [isAnimating,] = useState(true);
   const [theme, setTheme] = useState("light");
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800
+  });
 
   useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 600);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    // Safe window size detection
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Set initial size
+    handleResize();
+
+    // Add event listener with safe check
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
   useEffect(() => {
@@ -148,16 +176,21 @@ const Hero = () => {
     return () => observer.disconnect();
   }, []);
 
+  const isMobile = windowSize.width <= 768;
+  const isSmallMobile = windowSize.width <= 480;
+
   const styles = {
     container: {
       position: 'relative',
-      height: '100vh',
+      height: isMobile ? 'auto' : '100vh',
+      minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       overflow: 'hidden',
       zIndex: 0,
       background: theme === "light" ? "#e1d9d1" : "#121212",
+      padding: isMobile ? '20px 0' : '0',
     },
     backgroundContainer: {
       position: 'absolute',
@@ -180,46 +213,54 @@ const Hero = () => {
       position: 'relative',
       maxWidth: '1280px',
       margin: '0 auto',
-      padding: '0 16px',
+      padding: isMobile ? '0 20px' : '0 16px',
       textAlign: 'center',
       zIndex: 3,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     heroHeading1: {
-      width: '400px',
+      width: isMobile ? '100%' : '400px',
       fontFamily: 'Orbitron',
-      fontSize: isMobile ? 40 : 76,
+      fontSize: isSmallMobile ? '2rem' : isMobile ? '3rem' : '4.75rem',
       fontWeight: 700,
       marginBottom: '20px',
       WebkitBackgroundClip: 'text',
       backgroundClip: 'text',
       color: theme === "light" ? "#121212" : "#fff",
+      textAlign: 'center',
+      lineHeight: 1.2,
       position: 'relative',
-      right: isMobile ? -50 : 400,
-      top: isMobile ? 250 : 50,
+      right: isMobile ? -5 : 400,
+      top: isMobile ? 50 : 50,
     },
-
     heroHeading2: {
-      width: '500px',
+      width: isMobile ? '100%' : '500px',
       fontFamily: 'Orbitron',
-      fontSize: isMobile ? 40 : 76,
+      fontSize: isSmallMobile ? '2rem' : isMobile ? '3rem' : '4.75rem',
       fontWeight: 700,
       marginBottom: '20px',
       WebkitBackgroundClip: 'text',
       backgroundClip: 'text',
       color: theme === "light" ? "#121212" : "#fff",
+      textAlign: 'center',
+      lineHeight: 1.2,
       position: 'relative',
       right: isMobile ? -5 : 300,
-      top: isMobile ? 220 : 10,
+      top: isMobile ? 20 : 10,
     },
     heroSubtitle: {
-      fontSize: isMobile ? 12 : 15,
+      fontSize: isSmallMobile ? '0.9rem' : isMobile ? '1rem' : '0.94rem',
       color: theme === "light" ? "#121212" : "#ccc",
       marginBottom: '24px',
-      maxWidth: isMobile ? 300 : 430,
+      maxWidth: isMobile ? '100%' : '430px',
       textAlign: isMobile ? 'center' : 'justify',
+      lineHeight: 1.5,
       position: 'relative',
-      right: isMobile ? -100 : 300,
-      top: isMobile ? 200 : -10,
+      right: isMobile ? -10 : 250,
+      top: isMobile ? 10 : -10,
     },
     primaryButton: {
       display: 'flex',
@@ -234,11 +275,12 @@ const Hero = () => {
       border: 'none',
       fontSize: '1rem',
       cursor: 'pointer',
+      margin: '0 auto',
     },
     letterContainer: {
       display: 'inline-block',
       position: 'relative',
-      margin: '0 3px',
+      margin: '0 2px',
     },
     baseLetter: {
       opacity: 0.3,
@@ -273,7 +315,7 @@ const Hero = () => {
   const renderAnimatedText = (text) => {
     return text.split('').map((char, index) => {
       if (char === ' ') {
-        return <span key={index} style={{ display: 'inline-block', width: '20px' }}>&nbsp;</span>;
+        return <span key={index} style={{ display: 'inline-block', width: isMobile ? '10px' : '20px' }}>&nbsp;</span>;
       }
 
       const delay = index * 0.15;
@@ -289,11 +331,10 @@ const Hero = () => {
     });
   };
 
-
   return (
     <div style={styles.container}>
       {/* Earth animation in the background */}
-      <Earth />
+      {!isMobile && <Earth />}
 
       {/* Blobs (on top of Earth) */}
       <div style={styles.backgroundContainer}>
@@ -326,10 +367,17 @@ const Hero = () => {
 
       {/* Hero text content */}
       <div className='contentContainer' style={styles.contentContainer}>
+        {isMobile && <Earth />}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
           <style>{keyframes}</style>
           <h1 style={styles.heroHeading1}>
