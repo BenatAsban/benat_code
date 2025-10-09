@@ -13,84 +13,15 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 
-
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginMethod] = useState('email');
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
-
-
-  // Initialize reCAPTCHA
-  // useEffect(() => {
-  //   try {
-  //     recaptchaVerifier.current = new RecaptchaVerifier(
-  //       'recaptcha-container',
-  //       {
-  //         'size': 'invisible',
-  //         'callback': (response) => {
-  //           // reCAPTCHA solved, allow request
-  //         }
-  //       },
-  //       auth
-  //     );
-  //   } catch (err) {
-  //     console.error("reCAPTCHA initialization error:", err);
-  //     setError("Failed to initialize reCAPTCHA. Please refresh the page.");
-  //   }
-
-  //   return () => {
-  //     if (recaptchaVerifier.current) {
-  //       recaptchaVerifier.current.clear();
-  //     }
-  //   };
-  // }, []);
-
-  // const sendOTP = async () => {
-  //   setLoading(true);
-  //   setError('');
-  //   try {
-  //     const formattedPhone = `+${phone.replace(/[^\d]/g, '')}`;
-
-  //     if (!recaptchaVerifier.current) {
-  //       throw new Error("reCAPTCHA not initialized");
-  //     }
-
-  //     const result = await signInWithPhoneNumber(
-  //       auth,
-  //       formattedPhone,
-  //       recaptchaVerifier.current
-  //     );
-  //     setConfirmationResult(result);
-  //   } catch (err) {
-  //     setError(err.message);
-  //     console.error("OTP send error:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const verifyOTP = async () => {
-  //   setLoading(true);
-  //   setError('');
-  //   try {
-  //     await confirmationResult.confirm(otp);
-  //     navigate('/private');
-  //   } catch (err) {
-  //     setError("Invalid OTP. Please try again.");
-  //     console.error("OTP verification error:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -108,7 +39,7 @@ function Login({ onLogin }) {
       localStorage.setItem("authToken", token);
       localStorage.setItem("keepLoggedIn", JSON.stringify(true));
 
-      navigate("/Privatepage");
+      navigate("/privatepage");
       const userData = { email };
       onLogin(userData);
 
@@ -177,154 +108,60 @@ function Login({ onLogin }) {
   };
 
   return (
-    <motion.div variants={fadeUpVariant}
+    <motion.div
+      variants={fadeUpVariant}
       initial="hidden"
-      whileInView="visible" className="login-container">
+      whileInView="visible"
+      className="login-container"
+    >
       <div className="login-card">
         <div className="login-header">
           <h2>Welcome Back</h2>
           <p>Sign in to continue your journey</p>
         </div>
 
-        {/* Authentication Method Selector */}
-        {/*<div className="auth-method-selector">
-
-          <button
-            className={`method-btn ${loginMethod === 'phone' ? 'active' : ''}`}
-            onClick={() => setLoginMethod('phone')}
-            data-method="phone"
-          >
-            <i className="fas fa-mobile-alt"></i> Phone
-          </button>
-          <button
-            className={`method-btn ${loginMethod === 'google' ? 'active' : ''}`}
-            onClick={handleGoogleSignIn}
-          >
-            <i className="fab fa-google"></i> Google
-          </button>
-          <button
-            className={`method-btn ${loginMethod === 'email' ? 'active' : ''}`}
-            onClick={() => setLoginMethod('email')}
-          >
-            <i className="fas fa-envelope"></i> Email
-          </button>
-        </div>*/}
-
-        {/* Phone Login Form */}
-        {/* Phone Number Form (Shown by default) */}
-        {/*{loginMethod === "phone" && !otpSent && (
-          <Form className="login-form">
-            <div className="form-group">
-              <label htmlFor="phone">Phone Number</label>
-              <div className="input-with-icon">
-                <i className="fas fa-mobile-alt"></i>
-                <input
-                  type="text"
-                  id="phone"
-                  placeholder="Enter your phone number"
-                  value={phone}  // Fixed: should be phone state variable
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-                <div id="recaptcha-container" />
-              </div>
-            </div>
-
-            <button
-              className="login-btn"
-              type="submit"
-              onClick={() => {
-                sendOTP();
-                setOtpSent(true);  // Update state when OTP is sent
-              }}
-              disabled={loading || !phone}
-            >
-              {loading ? 'Sending...' : 'Send OTP'}
-            </button>
-          </Form>
-        )}*/}
-
-        {/* OTP Form (Shown only after OTP is sent) */}
-        {/*{loginMethod === 'phone' && otpSent && (
-          <Form className="login-form">
-            <div className="form-group">
-              <label htmlFor="otp">Enter OTP</label>  
-        <div className="input-with-icon">
-          <i className="fas fa-lock"></i>  
-          <input
-            type="text"
-            id="otp"
-            placeholder="Enter OTP"
-            onChange={(e) => setOtp(e.target.value)}
-            required
-          />
-        </div>
-      </div>
-
-      <button
-        className="login-btn"
-        type="submit"
-        onClick={verifyOTP}
-        disabled={loading || otp.length < 6}
-      >
-        {loading ? 'Verifying...' : 'Verify OTP'}
-      </button>
-    </Form>
-  )
-}*/}
-
-
         {/* Email Login Form */}
-        {
-          loginMethod === 'email' && (
-            <form className="login-form" onSubmit={handleLogin}>
-              <div className="form-group">
-                <label htmlFor="email" className="email">Email Address</label>
-                <div className="input-with-icon">
-                  <i className="fas fa-envelope"></i>
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
+        <form className="login-form" onSubmit={handleLogin}>
+          <div className="form-group">
+            <label htmlFor="email" className="email">Email Address</label>
+            <div className="input-with-icon">
+              <i className="fas fa-envelope"></i>
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-              <div className="form-group">
-                <label htmlFor="password" className="password">Password</label>
-                <div className="input-with-icon">
-                  <i className="fas fa-lock"></i>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    id="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <span
-                    className="password-toggle"
-                    onClick={toggleConfirmPasswordVisibility}
-                  >
-                    <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-                  </span>
-                </div>
-                {/* <div className="forgot-password">
-                  <Link to="/forgot-password">Forgot Password?</Link>
-                </div> */}
-              </div>
+          <div className="form-group">
+            <label htmlFor="password" className="password">Password</label>
+            <div className="input-with-icon">
+              <i className="fas fa-lock"></i>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                className="password-toggle"
+                onClick={togglePasswordVisibility}
+              >
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </span>
+            </div>
+          </div>
 
-              <button type="submit" className="login-btn">
-                Sign In
-              </button>
-            </form>
-          )
-        }
-
-
+          <button type="submit" className="login-btn">
+            Sign In
+          </button>
+        </form>
 
         {/* Divider */}
         <div className="divider">
@@ -342,7 +179,13 @@ function Login({ onLogin }) {
         <div className="login-footer">
           <p>Don't have an account? <Link to="/register">Sign Up</Link></p>
         </div>
-      </div >
+
+        <div className="owner-login">
+          <button onClick={() => navigate("/loginD")} className="owner-btn">
+            Owner Login
+          </button>
+        </div>
+      </div>
 
       <style jsx>{`
         * {
@@ -388,50 +231,6 @@ function Login({ onLogin }) {
           color: #7f8c8d;
           font-size: 16px;
         }
-        
-        // .auth-method-selector {
-        //   display: flex;
-        //   gap: 10px;
-        //   margin-bottom: 25px;
-        // }
-        
-        // .method-btn {
-        //   flex: 1;
-        //   padding: 12px 15px;
-        //   border: 2px solid #333;
-        //   border-radius: 10px;
-        //   background: #1e1e1e;
-        //   color: #e1d9d1;
-        //   font-weight: 600;
-        //   cursor: pointer;
-        //   transition: all 0.3s ease;
-        //   display: flex;
-        //   align-items: center;
-        //   justify-content: center;
-        //   gap: 8px;
-        // }
-        
-        // .method-btn:focus {
-        //   border-color: #b19cd9;
-        //   box-shadow: 0 0 0 3px rgba(177, 156, 217, 0.3);
-        // }
-
-        // .method-btn.active {
-        //   background: #b19cd9 !important;
-        //   color: white !important;
-        //   box-shadow: 0 4px 12px rgba(177, 156, 217, 0.3) !important;
-        // }
-
-        // .method-btn.google-btn.active {
-        //   background: #b19cd9;
-        //   background: #fff;
-        //   border: 1px solid #dfe4ea;
-        // }
-        
-        // .method-btn.google-btn:focus {
-        //   border-color: #b19cd9;
-        //   box-shadow: 0 0 0 3px rgba(177, 156, 217, 0.3);
-        // }
         
         .form-group {
           margin-bottom: 25px;
@@ -484,23 +283,6 @@ function Login({ onLogin }) {
           color: #7f8c8d;
         }
         
-        .forgot-password {
-          text-align: right;
-          margin-top: 8px;
-        }
-        
-        .forgot-password a {
-          color: #b19cd9;
-          text-decoration: none;
-          font-size: 14px;
-          transition: color 0.2s;
-        }
-        
-        .forgot-password a:hover {
-          color: #b19cd9;
-          text-decoration: underline;
-        }
-        
         .login-btn {
           width: 100%;
           padding: 16px;
@@ -521,25 +303,6 @@ function Login({ onLogin }) {
           box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);
         }
         
-        // .otp-resend {
-        //   text-align: center;
-        //   margin-top: 10px;
-        //   font-size: 14px;
-        // }
-        
-        // .otp-resend button {
-        //   background: none;
-        //   border: none;
-        //   color: #3498db;
-        //   cursor: pointer;
-        //   font-weight: 600;
-        //   padding: 0;
-        // }
-        
-        // .otp-resend button:hover {
-        //   text-decoration: underline;
-        // }
-        
         .divider {
           position: relative;
           margin: 30px 0;
@@ -553,13 +316,13 @@ function Login({ onLogin }) {
           left: 0;
           right: 0;
           height: 1px;
-          background: #e0e0e0;
+          background: #333;
           z-index: 1;
         }
         
         .divider span {
           display: inline-block;
-          background: #fff;
+          background: #121212;
           padding: 0 15px;
           position: relative;
           z-index: 2;
@@ -576,8 +339,8 @@ function Login({ onLogin }) {
         .social-btn {
           padding: 14px;
           border-radius: 12px;
-          border: 1px solid #e0e0e0;
-          background: #fff;
+          border: 1px solid #333;
+          background: #1e1e1e;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -586,28 +349,25 @@ function Login({ onLogin }) {
           font-size: 16px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: #e1d9d1;
         }
         
         .social-btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          background: #2a2a2a;
         }
         
         .social-btn.google-btn {
-          color: #3c4043;
-          border: 1px solid #dadce0;
+          border: 1px solid #333;
         }
         
         .social-btn.google-btn:hover {
-          background: #f8f9fa;
+          background: #2a2a2a;
         }
         
-        .social-btn i {
+        .google-icon {
           font-size: 20px;
-        }
-        
-        .social-btn.google-btn i {
-          color: #4285f4;
         }
         
         .login-footer {
@@ -627,86 +387,82 @@ function Login({ onLogin }) {
           text-decoration: underline;
         }
 
-        .google-icon {
-  font-size: 25px; 
-  } 
+        .owner-login {
+          margin-top: 20px;
+          text-align: center;
+        }
 
+        .owner-btn {
+          background: none;
+          border: none;
+          color: #b19cd9;
+          font-size: 13px;
+          cursor: pointer;
+          opacity: 0.7;
+          transition: all 0.3s ease;
+          text-decoration: underline;
+        }
 
-         @media screen and (max-width: 320px) {
+        .owner-btn:hover {
+          opacity: 1;
+          color: #d0b8ff;
+        }
 
-         .login-header {
-         margin-bottom: 20px; 
-         }
-
-
-
+        @media screen and (max-width: 480px) {
+          .login-container {
+            margin-top: 50px;
+            padding: 15px;
+          }
+          
+          .login-card {
+            padding: 30px 25px;
+          }
+          
           .login-header h2 {
-          margin-left: 7px;
+            font-size: 28px;
+          }
+          
+          .login-header p {
+            font-size: 14px;
+          }
+        }
+
+        @media screen and (max-width: 320px) {
+          .login-header h2 {
             font-size: 24px;
           }
 
-            .login-header p {
-          font-size: 11px;
-          margin-left: 10px;
+          .login-header p {
+            font-size: 12px;
+          }
+
+          #email::placeholder,
+          #password::placeholder {
+            font-size: 12px;
+          }
+
+          .input-with-icon i {
+            font-size: 14px;
+          }
+
+          .login-btn {
+            padding: 12px;
+            font-size: 16px;
+          }
+
+          .social-btn {
+            padding: 10px;
+            font-size: 14px;
+          }
+
+          .google-icon {
+            font-size: 18px;
+          }
+
+          .login-footer {
+            font-size: 14px;
+          }
         }
-
-         #email::placeholder {
-  font-size: 12px; 
-  color: #888;  
-}
-
-  #password::placeholder {
-  font-size : 11px;
-  color: #888;
-  }
-
-.fas.fa-envelope {
-  font-size: 14px; 
-}
-
-  .fas.fa-lock {
-  font-size: 14px;
-  }
-
-  
-.login-btn {
-  padding: 6px 12px;  
-  font-size: 14px; 
-}
-
-.social-btn.google-btn {
-  padding: 6px 12px;   
-  font-size: 14px;  
-  gap: 6px;       
-}
-
-
-.google-icon {
-  font-size: 18px;  
-  width: 18px;    
-  height: 18px;  
-}
-
-
-.social-btn.google-btn span {
-  font-size: 14px;
-}
-
-.login-footer {
-  margin-top: 16px;     
-  text-align: center;  
-  font-size: 14px;    
-  color: #555;   
-}
-
-.login-footer a {
-  font-size: 14px;    
-  font-weight: 600;  
-  text-decoration: none; 
-}
-
-        }
-
       `}</style>
 
       {/* Font Awesome for icons */}
@@ -714,7 +470,7 @@ function Login({ onLogin }) {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       />
-    </motion.div >
+    </motion.div>
   );
 }
 

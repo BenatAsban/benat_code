@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Hero from "../Components/Hero";
 import Posts from "../Components/Posts";
 import Categories from "../Components/Categories";
@@ -16,7 +16,7 @@ import { AiOutlineClose } from "react-icons/ai";
 // Register GSAP plugins
 gsap.registerPlugin(MorphSVGPlugin, Draggable);
 
-// Light Bulb Toggle Component (same as in Header)
+// Light Bulb Toggle Component
 const LightBulbToggle = ({ theme, handleToggleTheme }) => {
   const audioClickRef = useRef(null);
   const [, setIsAnimating] = useState(false);
@@ -105,7 +105,7 @@ const LightBulbToggle = ({ theme, handleToggleTheme }) => {
 
 const PrivatePage = ({ onShowBlogs, blogs }) => {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 430);
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
   });
@@ -114,6 +114,37 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
   const navMenuRef = useRef(null);
   const navToggleRef = useRef(null);
 
+  // Enhanced resize handler with debouncing
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 430);
+      // Auto-close nav on mobile when resizing
+      if (width <= 800) {
+        setIsNavShowing(false);
+      } else {
+        setIsNavShowing(true);
+      }
+    };
+
+    // Set initial values
+    handleResize();
+
+    // Add event listener with debounce
+    let resizeTimeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(handleResize, 100);
+    };
+
+    window.addEventListener('resize', debouncedResize);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, []);
+
+  // Click outside handler for mobile nav
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -133,6 +164,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
     };
   }, [isNavShowing]);
 
+  // Theme effect
   useEffect(() => {
     document.body.className = theme === "dark" ? "dark-mode" : "light-mode";
     localStorage.setItem("theme", theme);
@@ -142,6 +174,7 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Auth state listener
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (!currentUser) {
@@ -155,10 +188,8 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
   }, [navigate]);
 
   const closeNavHandler = () => {
-    if (window.innerWidth < 880) {
+    if (window.innerWidth < 800) {
       setIsNavShowing(false);
-    } else {
-      setIsNavShowing(true);
     }
   };
 
@@ -173,56 +204,42 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 420);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-
-  const styles = {
-
-    navLinks: {
-      gap: isMobile ? undefined : "2rem",
-      position: isMobile ? undefined : "relative",
-      left: isMobile ? undefined : "325px",
-    },
-
-    logoutButton: {
-      width: isMobile ? "160px" : undefined,
-      color: "#fff",
-      background: "#b19cd9",
-      padding: "0.5rem 1rem",
-      border: "none",
-      borderRadius: "4px",
-      cursor: "pointer",
-      fontSize: isMobile ? undefined : "0.9rem",
-      marginLeft: "auto",
-      position: "relative",
-      left: isMobile ? "-100px" : "5px",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: isMobile ? undefined : "35px",
-      transition: "background-color 0.3s ease",
-      ":hover": {
-        backgroundColor: "#b19cd9",
+  // Responsive styles
+  const styles = useMemo(() => ({
+      navLinks: {
+        gap: isMobile ? undefined : "2rem",
+        position: isMobile ? undefined : "relative",
+        left: isMobile ? "-45px" : "-35px",
       },
-    },
-
-    lightBulb: {
-      display: 'flex',
-      justifyContent: 'center',
-      margin: '5px 0',
-      position: "relative",
-      right: isMobile ? "390px" : "90px",
-    }
-
-  }
-
+      logoutButton: {
+        width: isMobile ? "160px" : undefined,
+        color: "#fff",
+        background: "#b19cd9",
+        padding: "0.5rem 1rem",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        fontSize: isMobile ? undefined : "0.9rem",
+        marginLeft: "auto",
+        position: "relative",
+        left: isMobile ? "-568px" : "5px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: isMobile ? undefined : "35px",
+        transition: "background-color 0.3s ease",
+      },
+      lightBulb: {
+        display: 'flex',
+        justifyContent: 'center',
+        margin: '5px 0',
+        position: "relative",
+        right: isMobile ? "390px" : "90px",
+      },
+      postContainer: {
+        padding: "50px 0 0 30px",
+      },
+    }), [isMobile]);
 
   if (!user) {
     return (
@@ -237,63 +254,48 @@ const PrivatePage = ({ onShowBlogs, blogs }) => {
     <div>
       <Outlet />
       <header>
-        <nav>
-          <div className="container nav__container">
-            <Link to="/privatepage" className="nav__logo" onClick={closeNavHandler}>
-              <img src={Logo} alt="Navbar Logo" />
-            </Link>
-
-            <div
-              style={styles.lightBulb} id='lightbulb'
-            >
-              <LightBulbToggle theme={theme} handleToggleTheme={handleToggleTheme} />
-            </div>
-
-            {isNavShowing && (
-              <ul className="nav__menu" style={styles.navLinks} ref={navMenuRef}>
-                <li className="nav-hover">
-                  <Link to="/privatepage" onClick={closeNavHandler}>
-                    Dashboard
+              <nav>
+                <div className="container nav__container">
+                  <Link to="/privatepage" className="nav__logo" onClick={closeNavHandler}>
+                    <img src={Logo} alt="Navbar Logo" />
                   </Link>
-                </li>
-                <li className="nav-hover">
-                  <Link to="/category" onClick={closeNavHandler}>
-                    Categories
-                  </Link>
-                </li>
-                <li
-                  id="logout-button"
-                  onClick={handleLogout}
-                  style={styles.logoutButton}
-                >
-                  Logout
-                </li>
-              </ul>
-            )}
-
-            <button
-              className="nav__toggle-btn"
-              onClick={() => setIsNavShowing(!isNavShowing)}
-              ref={navToggleRef}
-            >
-              {isNavShowing ? <AiOutlineClose /> : <FaBars />}
-            </button>
-          </div>
-        </nav>
-      </header>
-      <style jsx>{`
-    @media (max-width: 320px) {
-      #lightbulb {
-        position: relative !important;
-        right: 420px !important;
-      }
-
-      #logout-button {
-        position: relative;
-        left: -190px !important;
-      }
-    }
-  `}</style>
+      
+                  <div style={styles.lightBulb} id='lightbulb'>
+                    <LightBulbToggle theme={theme} handleToggleTheme={handleToggleTheme} />
+                  </div>
+      
+                  {isNavShowing && (
+                    <ul className="nav__menu" style={styles.navLinks}>
+                      <li className="nav-hover">
+                        <Link to="/privatepage" onClick={closeNavHandler}>
+                          Dashboard
+                        </Link>
+                      </li>
+                      <li className="nav-hover">
+                        <Link to="/category" onClick={closeNavHandler}>
+                          Categories
+                        </Link>
+                      </li>
+                      <li
+                        id="logout-button"
+                        onClick={handleLogout}
+                        style={styles.logoutButton}
+                      >
+                        Logout
+                      </li>
+                    </ul>
+                  )}
+      
+                  <button
+                    className="nav__toggle-btn"
+                    onClick={() => setIsNavShowing(!isNavShowing)}
+                  >
+                    {isNavShowing ? <AiOutlineClose /> : <FaBars />}
+                  </button>
+                </div>
+              </nav>
+            </header>
+      
       <Hero />
       <Posts />
       <Categories />

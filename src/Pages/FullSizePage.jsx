@@ -109,18 +109,62 @@ const FullSizePage = () => {
     const { postId } = useParams();
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 430);
 
 
     const [isNavShowing, setIsNavShowing] = useState(window.innerWidth > 800);
+    const navMenuRef = useRef(null);
+    const navToggleRef = useRef(null);
 
 
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 600);
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        const handleResize = () => {
+            const width = window.innerWidth;
+            setIsMobile(width <= 430);
+            // Auto-close nav on mobile when resizing
+            if (width <= 800) {
+                setIsNavShowing(false);
+            } else {
+                setIsNavShowing(true);
+            }
+        };
+
+        // Set initial values
+        handleResize();
+
+        // Add event listener with debounce
+        let resizeTimeout;
+        const debouncedResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(handleResize, 100);
+        };
+
+        window.addEventListener('resize', debouncedResize);
+        return () => {
+            window.removeEventListener('resize', debouncedResize);
+            clearTimeout(resizeTimeout);
+        };
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                isNavShowing &&
+                navMenuRef.current &&
+                !navMenuRef.current.contains(event.target) &&
+                navToggleRef.current &&
+                !navToggleRef.current.contains(event.target)
+            ) {
+                setIsNavShowing(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isNavShowing]);
 
 
     const [theme, setTheme] = useState(() => {
@@ -193,7 +237,7 @@ const FullSizePage = () => {
         navLinks: {
             gap: isMobile ? undefined : "2rem",
             position: isMobile ? undefined : "relative",
-            left: isMobile ? undefined : "325px",
+            left: isMobile ? "-45px" : "-35px",
         },
 
         logoutButton: {
@@ -223,7 +267,7 @@ const FullSizePage = () => {
             justifyContent: 'center',
             margin: '5px 0',
             position: "relative",
-            right: isMobile ? "360px" : "90px",
+            right: isMobile ? "390px" : "90px",
         }
 
     }
@@ -295,24 +339,14 @@ const FullSizePage = () => {
       }
     }
 
-     @media (max-width: 320px) {
-
-     #lightbulb {
-        position: relative !important;
-        right: 420px !important;
-      }
-
-      #logout-button {
-        position: relative;
-        left: -190px !important;
-      }
+     @media (max-width: 430px) {
 
       #post-bottom {
       margin-top: 1.5rem !important;
       }
 
       .post-detail {
-        width: 290px;
+        width: 350px;
         padding: 1rem;
         margin-bottom: 50px;
       }

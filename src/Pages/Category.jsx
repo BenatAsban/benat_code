@@ -259,7 +259,9 @@ const Categories = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isNavShowing, setIsNavShowing] = useState(window.innerWidth > 800);
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 430);
+  const navMenuRef = useRef(null);
+  const navToggleRef = useRef(null);
 
   // Theme state
   const [theme, setTheme] = useState(() => {
@@ -269,12 +271,51 @@ const Categories = () => {
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 420);
+      const width = window.innerWidth;
+      setIsMobile(width <= 430);
+      // Auto-close nav on mobile when resizing
+      if (width <= 800) {
+        setIsNavShowing(false);
+      } else {
+        setIsNavShowing(true);
+      }
     };
+
+    // Set initial values
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    // Add event listener with debounce
+    let resizeTimeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(handleResize, 100);
+    };
+
+    window.addEventListener('resize', debouncedResize);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isNavShowing &&
+        navMenuRef.current &&
+        !navMenuRef.current.contains(event.target) &&
+        navToggleRef.current &&
+        !navToggleRef.current.contains(event.target)
+      ) {
+        setIsNavShowing(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isNavShowing]);
 
   // Apply theme
   useEffect(() => {
@@ -366,7 +407,7 @@ const Categories = () => {
     navLinks: {
       gap: isMobile ? undefined : "2rem",
       position: isMobile ? undefined : "relative",
-      left: isMobile ? undefined : "325px",
+      left: isMobile ? "-45px" : "-35px",
     },
     logoutButton: {
       width: isMobile ? "160px" : undefined,
@@ -379,7 +420,7 @@ const Categories = () => {
       fontSize: isMobile ? undefined : "0.9rem",
       marginLeft: "auto",
       position: "relative",
-      left: isMobile ? "-100px" : "5px",
+      left: isMobile ? "-25px" : "5px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -596,7 +637,7 @@ const Categories = () => {
 }
 
 /* YourComponent.module.css */
-@media (max-width: 420px) {
+@media (max-width: 430px) {
   .categories__container {
     display: grid;
   grid-template-columns: repeat(3, 1fr);
